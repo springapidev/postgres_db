@@ -8,8 +8,10 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @Slf4j
 @RestController
 @AllArgsConstructor
@@ -45,7 +47,28 @@ public class CompanyController {
             return serviceResponse;
 
     }
+    @GetMapping(value = "list")
+    public ServiceResponse<List<Company>> findAll() {
 
+        ServiceResponse<List<Company>> serviceResponse=new ServiceResponse<>();
+        List<Company> company = this.service.findAll();
+        serviceResponse.setResponse(company);
+        serviceResponse.setStatus(HttpStatus.FOUND);
+        serviceResponse.setCode(302);
+        return serviceResponse;
+
+    }
+    @GetMapping(value = "all/{size}/{page}")
+    public ServiceResponse<List<Company>> findAllBySizeAndPage(@PathVariable int size, @PathVariable int page) {
+
+        ServiceResponse<List<Company>> serviceResponse=new ServiceResponse<>();
+        List<Company> company = this.service.findAllBySize(size,page);
+        serviceResponse.setResponse(company);
+        serviceResponse.setStatus(HttpStatus.FOUND);
+        serviceResponse.setCode(302);
+        return serviceResponse;
+
+    }
     @GetMapping(value = "log")
     public String log(){
         log.trace("Trace Message");
