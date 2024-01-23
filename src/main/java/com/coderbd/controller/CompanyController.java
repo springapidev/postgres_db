@@ -4,12 +4,15 @@ import com.coderbd.entity.Company;
 import com.coderbd.exceptions.CompanyServiceBusinessException;
 import com.coderbd.exceptions.ServiceResponse;
 import com.coderbd.service.CompanyService;
+import com.coderbd.service.ReportService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 @Slf4j
@@ -18,6 +21,7 @@ import java.util.List;
 @RequestMapping(value = "/company/")
 public class CompanyController {
     private final CompanyService service;
+    private final ReportService reportService;
 
 
     @PostMapping(value = "add")
@@ -67,6 +71,11 @@ public class CompanyController {
         serviceResponse.setStatus(HttpStatus.FOUND);
         serviceResponse.setCode(302);
         return serviceResponse;
+
+    }
+    @RequestMapping(value = "export/{reportType}/{page}/{size}",method = RequestMethod.GET)
+    public String exportJasperReport(@PathVariable String reportType,@PathVariable int page,@PathVariable int size) throws JRException, FileNotFoundException {
+        return this.reportService.exportReport("pdf",page,size);
 
     }
     @GetMapping(value = "log")

@@ -29,11 +29,11 @@ import java.util.stream.IntStream;
 public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository repository;
 
-//    @PostConstruct
-//    private void initDB() {
-//        List<Company> list = IntStream.rangeClosed(1, 50000).mapToObj(i -> new Company((long) i, "notNull" + i, "notempty" + i, "not blank" + i, "12345678911", "abc@gmail.com", 6, "asdfghj", LocalDate.now().minusYears(2), LocalDate.now().minusYears(20), "LIVE")).collect(Collectors.toList());
-//        this.repository.saveAll(list);
-//    }
+    @PostConstruct
+    private void initDB() {
+        List<Company> list = IntStream.rangeClosed(1, 500000).mapToObj(i -> new Company((long) i, "notNull" + i, "notempty" + i, "not blank" + i, "12345678911", "abc@gmail.com", 6, "asdfghj", LocalDate.now().minusYears(2), LocalDate.now().minusYears(20), "LIVE")).collect(Collectors.toList());
+        this.repository.saveAll(list);
+    }
 
     @CachePut(key = "#company.id")
     @Override
